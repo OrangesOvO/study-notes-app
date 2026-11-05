@@ -18,7 +18,11 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke as DrawStroke
+import androidx.compose.ui.graphics.drawscope.scale
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.input.pointer.changedToDown
+import androidx.compose.ui.input.pointer.changedToUp
 import androidx.compose.ui.input.pointer.pointerInput
 import com.example.studyink.model.InkPoint
 import com.example.studyink.model.PenType
@@ -99,12 +103,12 @@ fun DrawingCanvas(
                 }
             }
     ) {
-        val scale = min(size.width / canvasWidth, size.height / canvasHeight)
-        val offsetX = (size.width - canvasWidth * scale) / 2f
-        val offsetY = (size.height - canvasHeight * scale) / 2f
+        val displayScale = min(size.width / canvasWidth, size.height / canvasHeight)
+        val offsetX = (size.width - canvasWidth * displayScale) / 2f
+        val offsetY = (size.height - canvasHeight * displayScale) / 2f
 
         translate(offsetX, offsetY) {
-            scale(scale, scale) {
+            scale(displayScale, displayScale) {
                 if (baseBitmap != null) {
                     drawImage(baseBitmap.asImageBitmap())
                 } else {
