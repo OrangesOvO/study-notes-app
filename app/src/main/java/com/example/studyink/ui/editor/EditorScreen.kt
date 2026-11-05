@@ -165,7 +165,7 @@ fun EditorScreen(
             ToolBar(
                 penType = vm.penType,
                 penColor = vm.penColor,
-                onPenTypeChange = { vm.setPenType(it) },
+                onPenTypeChange = { vm.penType = it },
                 onColorClick = { showColorPicker = true }
             )
         }
@@ -213,7 +213,7 @@ fun EditorScreen(
             initial = vm.penColor,
             onDismiss = { showColorPicker = false },
             onConfirm = {
-                vm.setPenColor(it)
+                vm.penColor = it
                 showColorPicker = false
             }
         )

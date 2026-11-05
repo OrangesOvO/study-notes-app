@@ -33,23 +33,13 @@ class EditorViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     var penType by mutableStateOf(PenType.PEN)
-        private set
     var penColor by mutableStateOf(Color(0xFF1A1A1A))
-        private set
 
     // 撤销 / 重做栈（会话内）
     var undoStack by mutableStateOf(listOf<Stroke>())
         private set
     var redoStack by mutableStateOf(listOf<Stroke>())
         private set
-
-    fun setPenType(type: PenType) {
-        penType = type
-    }
-
-    fun setPenColor(color: Color) {
-        penColor = color
-    }
 
     fun penWidth(): Float = when (penType) {
         PenType.PEN -> 8f
