@@ -2,6 +2,7 @@ package com.example.studyink.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.studyink.model.PageBackground
 
 @Entity(tableName = "notes")
 data class NoteEntity(
@@ -11,6 +12,7 @@ data class NoteEntity(
     val pdfPath: String? = null,      // 导入的 PDF 私有路径，BLANK 时为 null
     val currentPage: Int = 0,
     val pageCount: Int = 1,
+    val background: String = PageBackground.BLANK.name, // 页面底纹
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis()
 )

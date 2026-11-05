@@ -265,7 +265,11 @@ private fun NoteCard(
             }
             Spacer(Modifier.height(8.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                val typeText = if (note.type == NoteType.PDF.name) "PDF · ${note.pageCount} 页" else "空白笔记"
+                val typeText = if (note.type == NoteType.PDF.name) {
+                    "PDF · ${note.pageCount} 页"
+                } else {
+                    "空白笔记 · ${note.pageCount} 页"
+                }
                 Text(
                     typeText,
                     style = MaterialTheme.typography.bodySmall,

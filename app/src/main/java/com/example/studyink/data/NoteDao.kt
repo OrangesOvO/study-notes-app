@@ -42,4 +42,26 @@ interface NoteDao {
 
     @Query("DELETE FROM strokes WHERE noteId = :noteId")
     suspend fun deleteStrokesForNote(noteId: Long)
+
+    // ---- 多页管理 ----
+
+    @Query("UPDATE notes SET pageCount = pageCount + 1, updatedAt = :ts WHERE id = :id")
+    suspend fun incrementPageCount(id: Long, ts: Long)
+
+    @Query("UPDATE notes SET pageCount = pageCount - 1, updatedAt = :ts WHERE id = :id AND pageCount > 1")
+    suspend fun decrementPageCount(id: Long, ts: Long)
+
+    @Query("DELETE FROM strokes WHERE noteId = :noteId AND pageIndex = :pageIndex")
+    suspend fun deleteStrokesOnPage(noteId: Long, pageIndex: Int)
+
+    @Query("UPDATE strokes SET pageIndex = pageIndex - 1 WHERE noteId = :noteId AND pageIndex > :pageIndex")
+    suspend fun shiftStrokesDown(noteId: Long, pageIndex: Int)
+
+    // ---- 标题与底纹 ----
+
+    @Query("UPDATE notes SET title = :title, updatedAt = :ts WHERE id = :id")
+    suspend fun renameNote(id: Long, title: String, ts: Long)
+
+    @Query("UPDATE notes SET background = :background, updatedAt = :ts WHERE id = :id")
+    suspend fun setBackground(id: Long, background: String, ts: Long)
 }

@@ -1,6 +1,7 @@
 package com.example.studyink.data
 
 import com.example.studyink.model.NoteType
+import com.example.studyink.model.PageBackground
 import com.example.studyink.model.PenType
 import com.example.studyink.model.Stroke
 import com.example.studyink.util.StrokeSerializer
@@ -50,6 +51,27 @@ class NoteRepository(private val dao: NoteDao) {
 
     suspend fun deleteStroke(strokeId: Long) {
         dao.deleteStroke(strokeId)
+    }
+
+    /** 末尾追加一页，返回新的总页数 */
+    suspend fun appendPage(noteId: Long): Int {
+        dao.incrementPageCount(noteId, System.currentTimeMillis())
+        return dao.getNote(noteId)?.pageCount ?: 1
+    }
+
+    /** 删除指定页：先删该页笔迹，再把后续页整体前移一位，最后页数 -1 */
+    suspend fun deletePage(noteId: Long, pageIndex: Int) {
+        dao.deleteStrokesOnPage(noteId, pageIndex)
+        dao.shiftStrokesDown(noteId, pageIndex)
+        dao.decrementPageCount(noteId, System.currentTimeMillis())
+    }
+
+    suspend fun renameNote(id: Long, title: String) {
+        dao.renameNote(id, title, System.currentTimeMillis())
+    }
+
+    suspend fun setBackground(id: Long, background: PageBackground) {
+        dao.setBackground(id, background.name, System.currentTimeMillis())
     }
 
     private suspend fun touch(noteId: Long) {
